@@ -19,11 +19,11 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://umide.dev"),
   title: {
-    default: "UMIDE — The Unified IDE for Mobile Development",
+    default: "UMIDE — The Cross-Platform Mobile AI IDE",
     template: "%s · UMIDE",
   },
   description:
-    "One IDE with the Android emulator and iOS Simulator embedded as panels (no Simulator.app), a built-in AI assistant that sees and drives your devices, and your own Claude Code / Codex / Gemini agents. Built in Rust for React Native & Flutter.",
+    "A cross-platform mobile AI IDE with the Android emulator and iOS Simulator embedded right in the editor, plus a built-in AI assistant that sees and drives your devices. Built in Rust for React Native & Flutter, on macOS, Windows & Linux.",
   keywords: [
     "mobile IDE",
     "React Native",

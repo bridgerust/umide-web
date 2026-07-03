@@ -70,15 +70,16 @@ export default async function Home() {
           <span className="text-dim-2">· macOS · Windows · Linux</span>
         </div>
         <h1 className="text-[clamp(40px,7vw,80px)] font-black leading-[1.02] tracking-[-2.5px]">
-          The mobile IDE that
+          The cross-platform
           <br />
-          <span className="grad-text">codes with you</span>
+          <span className="grad-text">mobile AI IDE</span>
         </h1>
-        <p className="mx-auto mt-6 max-w-[620px] text-[clamp(17px,2.2vw,21px)] text-dim">
-          The <b className="text-text">iOS Simulator embedded</b> — no Simulator.app —
-          alongside the Android emulator, a built-in AI assistant that{" "}
-          <b className="text-text">sees and drives your devices</b>, and your own{" "}
-          <b className="text-text">Claude Code · Codex · Gemini</b> agents.
+        <p className="mx-auto mt-6 max-w-[640px] text-[clamp(17px,2.2vw,21px)] text-dim">
+          React Native &amp; Flutter, with the{" "}
+          <b className="text-text">Android emulator and iOS Simulator embedded</b>{" "}
+          right in the editor — and a built-in{" "}
+          <b className="text-text">AI assistant that sees and drives your devices</b>.
+          One window, no context-switching.
         </p>
         <div className="mt-9">
           <PrimaryDownload assets={assets} tag={release?.tag ?? null} />
