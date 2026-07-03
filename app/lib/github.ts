@@ -68,7 +68,7 @@ export async function getLatestRelease(): Promise<Release | null> {
       `https://api.github.com/repos/${REPO}/releases?per_page=10`,
       {
         headers: { Accept: "application/vnd.github+json" },
-        next: { revalidate: 3600 },
+        next: { revalidate: 600 },
       },
     );
     if (!res.ok) return null;
@@ -88,7 +88,7 @@ export async function getReleases(): Promise<Release[]> {
       `https://api.github.com/repos/${REPO}/releases?per_page=20`,
       {
         headers: { Accept: "application/vnd.github+json" },
-        next: { revalidate: 3600 },
+        next: { revalidate: 600 },
       },
     );
     if (!res.ok) return [];
