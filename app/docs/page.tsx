@@ -118,9 +118,9 @@ export default function DocsPage() {
 
       <Section title="AI assistant">
         <p>
-          The assistant lives in the left sidebar (the ✨ tab). Use a key-free backend
-          (your own Claude Code / Codex login) or paste an API key (Claude, OpenAI,
-          DeepSeek, Gemini). It reads your code, proposes edits with per-action approval,
+          The assistant lives in the left sidebar (the ✨ tab). Connect your AI
+          provider with an API key (Claude or OpenAI). It reads your code, proposes
+          edits with per-action approval,
           runs commands, and can <b className="text-text">screenshot and drive the running
           device</b> to verify its own changes.
         </p>

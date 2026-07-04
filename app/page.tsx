@@ -29,8 +29,8 @@ const FEATURES = [
   },
   {
     icon: "🔑",
-    title: "Your own agents, key-free",
-    body: "Point the assistant at your own Claude Code, Codex, or Gemini login — no API key to paste. Claude Code edits and runs commands with per-action approval, right in the panel.",
+    title: "Bring your own key",
+    body: "Connect the AI provider you already use — paste your Claude or OpenAI API key. The agent reads your code and proposes edits and commands with per-action approval, right in the panel.",
     span: "md:col-span-2",
   },
   {
