@@ -61,7 +61,7 @@ export default function DocsPage() {
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <Card href="/download" title="1 · Install" body="Grab the build for your OS and open a mobile project." />
+        <Card href="/download" title="1 · Install" body="Install UMIDE on macOS or Windows and open a mobile project." />
         <Card href="/docs#run" title="2 · Run on device" body="Hit ▶ Run and watch your app launch in a live terminal." />
         <Card href="/docs#devices" title="3 · Drive the device" body="Tap, type, read logs — and let the AI do it too." />
       </div>
@@ -93,9 +93,9 @@ export default function DocsPage() {
       <Section title="Run on device">
         <p id="run" className="scroll-mt-24">
           The top bar has a prominent <b className="text-text">▶ Run</b> button. On macOS
-          you pick <b className="text-text">▶ Android</b> or <b className="text-text">▶ iOS</b>;
-          on Windows/Linux there&rsquo;s a single ▶ Run (Android). It builds and launches
-          your app in a live terminal tab.
+          you pick <b className="text-text">▶ Android</b> or <b className="text-text">▶ iOS</b>.
+          On Windows, ▶ Run launches the Android app. The build and launch output
+          appears in a live terminal tab.
         </p>
       </Section>
 

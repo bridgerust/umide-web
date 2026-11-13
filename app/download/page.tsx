@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { getLatestRelease, assetFor, RELEASES_URL, REPO_URL, type OS, type Asset } from "../lib/github";
+import { getLatestRelease, assetFor, RELEASES_URL, type OS, type Asset } from "../lib/github";
 import { DownloadCards } from "../components/DownloadCards";
 
 export const metadata: Metadata = {
   title: "Download",
   description:
-    "Download UMIDE for macOS, Windows, or Linux — the unified IDE for React Native & Flutter with embedded emulators and an AI assistant.",
+    "Download UMIDE for macOS and Windows — the unified IDE for React Native & Flutter with embedded emulators and an AI assistant.",
 };
 
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
@@ -24,7 +24,6 @@ export default async function DownloadPage() {
   const assets: Record<OS, Asset | null> = {
     mac: assetFor(release, "mac"),
     windows: assetFor(release, "windows"),
-    linux: assetFor(release, "linux"),
   };
 
   return (
@@ -41,8 +40,7 @@ export default async function DownloadPage() {
           Download <span className="grad-text">UMIDE</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[520px] text-dim">
-          Free and open source. Pick your platform — we&rsquo;ve highlighted the build for
-          the system you&rsquo;re on.
+          Free and open source. Choose the macOS or Windows installer.
         </p>
       </div>
 
@@ -95,26 +93,6 @@ export default async function DownloadPage() {
             </Step>
           </ol>
         </div>
-
-        <div className="glass rounded-2xl p-7 md:col-span-2">
-          <h2 className="text-lg font-bold">Linux</h2>
-          <ol className="mt-4 space-y-4 text-[15px]">
-            <Step n={1}>
-              Install the <code className="rounded bg-glass px-1.5 py-0.5 font-mono text-dim">.deb</code>:
-              <pre className="mt-2 overflow-x-auto rounded-lg bg-black/30 p-3 font-mono text-[13px] text-cyan">
-                sudo dpkg -i umide-linux-x86_64.deb
-              </pre>
-            </Step>
-            <Step n={2}>
-              Linux is a <b className="text-text">preview build</b> — it compiles and is expected to work, but
-              hasn&rsquo;t been run live end-to-end. Expect rough edges, and please{" "}
-              <a href={`${REPO_URL}/discussions`} className="text-blue hover:underline">
-                let us know
-              </a>{" "}
-              how it goes.
-            </Step>
-          </ol>
-        </div>
       </section>
 
       {/* Requirements */}
@@ -125,7 +103,6 @@ export default async function DownloadPage() {
         <ul className="mt-4 grid gap-2 text-[15px] text-dim md:grid-cols-3">
           <li>macOS 12+ (Apple Silicon or Intel)</li>
           <li>Windows 10/11 (x64)</li>
-          <li>Linux (Debian/Ubuntu, x64)</li>
           <li>Xcode — for iOS (macOS only)</li>
           <li>Android SDK + emulator — for Android</li>
           <li>

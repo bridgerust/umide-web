@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s · UMIDE",
   },
   description:
-    "A cross-platform mobile AI IDE with the Android emulator and iOS Simulator embedded right in the editor, plus a built-in AI assistant that sees and drives your devices. Built in Rust for React Native & Flutter, on macOS, Windows & Linux.",
+    "A cross-platform mobile AI IDE with the Android emulator and iOS Simulator embedded right in the editor, plus a built-in AI assistant that sees and drives your devices. Built in Rust for React Native & Flutter, on macOS and Windows.",
   keywords: [
     "mobile IDE",
     "React Native",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "UMIDE — The Unified IDE for Mobile Development",
     description:
-      "Embedded emulators, an AI assistant that drives your devices, and your own agent CLIs — all in one Rust-powered IDE for React Native & Flutter.",
+      "Embedded emulators and a built-in AI assistant for React Native and Flutter on macOS and Windows.",
     url: "https://umide.dev",
     siteName: "UMIDE",
     type: "website",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "UMIDE — The Unified IDE for Mobile Development",
     description:
-      "Embedded emulators, an AI assistant that drives your devices, and your own agent CLIs — all in one Rust-powered IDE.",
+      "Embedded emulators and a built-in AI assistant on macOS and Windows.",
   },
 };
 

@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RELEASES_URL, OS_META, formatSize, type Asset, type OS } from "../lib/github";
+import { RELEASES_URL, OS_META, SUPPORTED_OS, formatSize, type Asset, type OS } from "../lib/github";
 import { detectOS } from "../lib/os";
-
-const ORDER: OS[] = ["mac", "windows", "linux"];
 
 const ICON: Record<OS, React.ReactNode> = {
   mac: (
@@ -17,11 +15,6 @@ const ICON: Record<OS, React.ReactNode> = {
       <path d="M3 5.48L10.4 4.5v7.02H3V5.48zm0 13.04l7.4.98V13H3v5.52zM11.2 4.4L21 3v8.52h-9.8V4.4zm0 8.12H21V21l-9.8-1.38v-7.1z" />
     </svg>
   ),
-  linux: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
-      <path d="M12.3 2c-1.9 0-3.2 1.7-3.1 3.9.03.6.2 1.9.1 2.6-.1.6-.7 1.4-1.2 2.2-.6.9-1.4 2-1.9 3.2-.5 1.1-.7 2.3-.3 3 .2.4.1.8-.1 1.1-.3.5-.2 1 .2 1.3.5.4 1.4.4 2.2.6.8.2 1.2.7 2 .9.7.2 1.7.1 2.3-.4.3-.3.8-.5 1.3-.6.6-.1 1.3-.2 1.8-.7.4-.4.4-1 .3-1.5-.1-.4 0-.7.2-1 .5-.7.7-1.7.4-2.8-.3-1.1-1-2.2-1.6-3.1-.5-.8-1-1.5-1.1-2.1-.1-.7.05-2 .1-2.6C15.5 3.7 14.2 2 12.3 2zm-1 4.2c.4 0 .7.4.7.9 0 .2 0 .3-.1.4-.1-.1-.3-.1-.5-.1-.2 0-.4 0-.5.1-.1-.1-.1-.2-.1-.4 0-.5.2-.9.6-.9zm2 0c.4 0 .6.4.6.9 0 .2 0 .3-.1.4-.1-.1-.3-.1-.5-.1s-.4 0-.5.1c0-.1-.1-.2-.1-.4 0-.5.3-.9.6-.9z" />
-    </svg>
-  ),
 };
 
 export function DownloadCards({
@@ -32,10 +25,10 @@ export function DownloadCards({
   const [os, setOS] = useState<OS | null>(null);
   useEffect(() => setOS(detectOS()), []);
 
-  const sorted = os ? [os, ...ORDER.filter((o) => o !== os)] : ORDER;
+  const sorted = os ? [os, ...SUPPORTED_OS.filter((o) => o !== os)] : SUPPORTED_OS;
 
   return (
-    <div className="grid gap-5 md:grid-cols-3">
+    <div className="grid gap-5 md:grid-cols-2">
       {sorted.map((o) => {
         const a = assets[o];
         const meta = OS_META[o];
@@ -63,7 +56,7 @@ export function DownloadCards({
                   : "border border-border bg-glass text-text hover:border-white/25"
               }`}
             >
-              Download {meta.installer}
+              {a ? `Download ${meta.installer}` : "View GitHub releases"}
               {a && <span className="text-xs font-medium opacity-70">{formatSize(a.size)}</span>}
             </a>
           </div>

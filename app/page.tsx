@@ -52,7 +52,6 @@ export default async function Home() {
   const assets: Record<OS, Asset | null> = {
     mac: assetFor(release, "mac"),
     windows: assetFor(release, "windows"),
-    linux: assetFor(release, "linux"),
   };
 
   return (
@@ -67,7 +66,7 @@ export default async function Home() {
           ) : (
             <b className="text-text">Open source</b>
           )}
-          <span className="text-dim-2">· macOS · Windows · Linux</span>
+          <span className="text-dim-2">· macOS · Windows</span>
         </div>
         <h1 className="text-[clamp(40px,7vw,80px)] font-black leading-[1.02] tracking-[-2.5px]">
           The cross-platform
@@ -131,7 +130,7 @@ export default async function Home() {
             Build, run, and debug mobile apps <span className="grad-text">without leaving the editor</span>
           </h2>
           <p className="mx-auto mt-4 max-w-[520px] text-dim">
-            Free and open source. React Native &amp; Flutter, on macOS, Windows, and Linux.
+            Free and open source. React Native &amp; Flutter, on macOS and Windows.
           </p>
           <div className="mt-8 flex justify-center">
             <Link

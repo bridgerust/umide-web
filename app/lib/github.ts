@@ -6,7 +6,8 @@ export const REPO = "bridgerust/umide";
 export const REPO_URL = `https://github.com/${REPO}`;
 export const RELEASES_URL = `${REPO_URL}/releases`;
 
-export type OS = "mac" | "windows" | "linux";
+export const SUPPORTED_OS = ["mac", "windows"] as const;
+export type OS = (typeof SUPPORTED_OS)[number];
 
 export interface Asset {
   name: string;
@@ -105,7 +106,6 @@ export function assetFor(release: Release | null, os: OS): Asset | null {
   const ext: Record<OS, RegExp> = {
     mac: /\.dmg$/i,
     windows: /\.msi$/i,
-    linux: /\.deb$/i,
   };
   return release.assets.find((a) => ext[os].test(a.name)) ?? null;
 }
@@ -123,11 +123,6 @@ export const OS_META: Record<
     label: "Windows",
     installer: ".msi",
     note: "Windows 10/11 · installer not yet code-signed",
-  },
-  linux: {
-    label: "Linux",
-    installer: ".deb",
-    note: "Debian/Ubuntu · preview build",
   },
 };
 
