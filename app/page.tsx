@@ -1,146 +1,89 @@
+import Image from "next/image";
 import Link from "next/link";
-import { getLatestRelease, assetFor, REPO_URL, type OS, type Asset } from "./lib/github";
 import { PrimaryDownload } from "./components/PrimaryDownload";
+import { getReleases, RELEASES_URL, workbenchDownload } from "./lib/github";
 
 const FEATURES = [
   {
-    icon: "📱",
-    title: "Embedded emulators",
-    body: "The Android emulator and iOS Simulator live inside the IDE as panels — tap, type, and press hardware buttons without leaving your editor. On macOS the iOS Simulator runs headless, with no Simulator.app window.",
-    span: "md:col-span-3",
+    title: "Work with Codex or Claude Code",
+    body: "Connect either coding agent from the first-run setup. Open a project folder or give a conversation its own Git worktree so you can review its changes separately.",
   },
   {
-    icon: "✨",
-    title: "An AI that sees your screen",
-    body: "A built-in, approval-gated agent (Claude, OpenAI, DeepSeek, Gemini) reads your code, proposes edits, runs commands — and can screenshot and drive the running device to verify its own work.",
-    span: "md:col-span-3",
+    title: "Keep your tools beside the chat",
+    body: "Read a file, make a quick edit or run a command in the integrated terminal. For deeper editing, send the file to VS Code, Android Studio, Xcode or another installed editor.",
   },
   {
-    icon: "📜",
-    title: "Device logs, live",
-    body: "Android logcat and the iOS unified log stream right into the IDE — severity-coloured, tailing, one click to clear. No Android Studio or Xcode just to read logs.",
-    span: "md:col-span-2",
-  },
-  {
-    icon: "▶️",
-    title: "Run, front and centre",
-    body: "A prominent ▶ Run button in the top bar — on macOS you pick ▶ Android or ▶ iOS. One click builds and runs your React Native, Flutter, or Expo app in a live terminal.",
-    span: "md:col-span-2",
-  },
-  {
-    icon: "🔑",
-    title: "Bring your own key",
-    body: "Connect the AI provider you already use — paste your Claude or OpenAI API key. The agent reads your code and proposes edits and commands with per-action approval, right in the panel.",
-    span: "md:col-span-2",
-  },
-  {
-    icon: "⚡",
-    title: "Built in Rust",
-    body: "GPU-accelerated UI on Floem. Starts instantly and stays fast at any project size — forked from Lapce.",
-    span: "md:col-span-3",
-  },
-  {
-    icon: "🔁",
-    title: "The mobile loop, closed",
-    body: "Edit → run on device → read the screen and native logs → verify. The whole see-act-verify loop lives in one window, so you never alt-tab between Xcode, Android Studio, a terminal, and a chat.",
-    span: "md:col-span-3",
+    title: "Run your mobile app",
+    body: "Build for an Android emulator or, on macOS, an iOS Simulator. Inspect the screen and device logs alongside the conversation while you work through a bug.",
   },
 ];
 
 export default async function Home() {
-  const release = await getLatestRelease();
-  const assets: Record<OS, Asset | null> = {
-    mac: assetFor(release, "mac"),
-    windows: assetFor(release, "windows"),
-  };
-
+  const download = workbenchDownload(await getReleases());
   return (
     <>
-      {/* HERO */}
-      <section className="mx-auto max-w-[860px] px-6 pb-10 pt-20 text-center md:pt-28">
-        <div className="glass mb-7 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold text-dim">
-          <span className="h-1.5 w-1.5 rounded-full bg-green shadow-[0_0_10px_var(--color-green)]" />
-          {release?.prerelease && <b className="text-text">Public beta</b>}
-          {release ? (
-            <span className="font-mono text-dim-2">{release.tag}</span>
-          ) : (
-            <b className="text-text">Open source</b>
-          )}
-          <span className="text-dim-2">· macOS · Windows</span>
-        </div>
-        <h1 className="text-[clamp(40px,7vw,80px)] font-black leading-[1.02] tracking-[-2.5px]">
-          The cross-platform
-          <br />
-          <span className="grad-text">mobile AI IDE</span>
+      <section className="mx-auto max-w-[860px] px-6 pb-8 pt-14 text-center md:pt-20">
+        <h1 className="text-[clamp(44px,7vw,78px)] font-black leading-[1.05] tracking-[-2.5px]">
+          Umide <span className="grad-text">Workbench</span>
         </h1>
-        <p className="mx-auto mt-6 max-w-[640px] text-[clamp(17px,2.2vw,21px)] text-dim">
-          React Native &amp; Flutter, with the{" "}
-          <b className="text-text">Android emulator and iOS Simulator embedded</b>{" "}
-          right in the editor — and a built-in{" "}
-          <b className="text-text">AI assistant that sees and drives your devices</b>.
-          One window, no context-switching.
+        <p className="mx-auto mt-5 max-w-[660px] text-[clamp(17px,2.2vw,21px)] text-dim">
+          Build mobile and web apps with <b className="text-text">Codex or Claude Code</b>.
+          Keep the conversation, project files, terminal and running app in one desktop window.
         </p>
-        <div className="mt-9">
-          <PrimaryDownload assets={assets} tag={release?.tag ?? null} />
-        </div>
-        <p className="mx-auto mt-6 max-w-[640px] text-[13px] text-dim-2">
-          {release?.prerelease && (
+        <div className="mt-7">
+          {download ? (
+            <PrimaryDownload assets={download.assets} tag={download.release.tag} />
+          ) : (
             <>
-              🧪 Public beta — try it and{" "}
-              <a href={`${REPO_URL}/issues/new?labels=beta&template=beta_feedback.yml`} className="text-blue hover:underline">
-                tell us what breaks
+              <a className="grad-bg inline-flex rounded-xl px-6 py-3 font-bold text-[#0a0b12]" href={RELEASES_URL}>
+                Follow Workbench releases
               </a>
-              .{" "}
+              <p className="mt-3 text-sm text-dim">The first Workbench preview is planned for macOS and Windows.</p>
             </>
           )}
-          Embedded iOS (no Simulator.app) on macOS needs{" "}
-          <code className="rounded bg-glass px-1.5 py-0.5 font-mono text-dim">brew install idb-companion</code>.
-          Open source, Apache-2.0. macOS build signed &amp; notarized; the Windows installer isn&rsquo;t code-signed yet.
-        </p>
+        </div>
+        <Link href="/download#classic" className="mt-3 inline-block text-sm text-blue hover:underline">
+          Looking for UMIDE Classic?
+        </Link>
       </section>
 
-      {/* FEATURES */}
-      <section id="features" className="wrap mt-24 scroll-mt-24">
-        <p className="text-center text-sm font-semibold uppercase tracking-wider text-blue">
-          Everything, in one window
-        </p>
-        <h2 className="mx-auto mt-3 max-w-[720px] text-center text-[clamp(28px,4vw,44px)] font-black tracking-[-1px]">
-          Stop juggling five tools
-        </h2>
-        <p className="mx-auto mt-4 max-w-[560px] text-center text-dim">
-          Editor, emulators, terminal, and AI — unified. No more alt-tabbing between
-          Xcode, Android Studio, a terminal, and a chat window.
-        </p>
-        <div className="mt-12 grid gap-5 md:grid-cols-6">
-          {FEATURES.map((f) => (
-            <div key={f.title} className={`glass rounded-2xl p-6 ${f.span}`}>
-              <div className="text-2xl">{f.icon}</div>
-              <h3 className="mt-3 text-lg font-bold">{f.title}</h3>
-              <p className="mt-2 text-[15px] text-dim">{f.body}</p>
-            </div>
+      <figure className="wrap max-w-[1030px]">
+        <a href="/workbench/workspace.webp" aria-label="View the full Workbench screenshot">
+          <Image priority src="/workbench/workspace.webp" width={2000} height={1305} alt="A Codex conversation and project terminal next to a live preview of a trail guide in Umide Workbench" sizes="(max-width: 1030px) 94vw, 980px" className="block h-auto w-full rounded-xl border border-border shadow-2xl" />
+        </a>
+      </figure>
+
+      <section id="features" className="wrap mt-16 scroll-mt-24 md:mt-24">
+        <h2 className="text-[clamp(28px,4vw,42px)] font-black leading-tight tracking-[-1px]">Inside the Workbench</h2>
+        <div className="mt-7 grid gap-4 md:grid-cols-3">
+          {FEATURES.map((feature) => (
+            <article key={feature.title} className="glass rounded-2xl p-6">
+              <h3 className="text-lg font-bold">{feature.title}</h3>
+              <p className="mt-3 text-[15px] text-dim">{feature.body}</p>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* CLOSING CTA */}
-      <section className="wrap mt-28">
-        <div className="glass relative overflow-hidden rounded-[28px] px-8 py-16 text-center">
-          <div className="grad-bg absolute inset-x-0 top-0 h-1 opacity-80" />
-          <h2 className="mx-auto max-w-[640px] text-[clamp(26px,3.6vw,40px)] font-black tracking-[-1px]">
-            Build, run, and debug mobile apps <span className="grad-text">without leaving the editor</span>
+      <section className="wrap mt-16 grid items-center gap-7 md:mt-24 md:grid-cols-[0.85fr_1.35fr] md:gap-12">
+        <div>
+          <h2 className="text-[clamp(28px,4vw,42px)] font-black leading-tight tracking-[-1px]">
+            See what your agent tested
           </h2>
-          <p className="mx-auto mt-4 max-w-[520px] text-dim">
-            Free and open source. React Native &amp; Flutter, on macOS and Windows.
+          <p className="mt-4 text-dim">
+            Ask the agent to check a form on your local site. It can fill a field, click Submit and check for the confirmation.
+            Open the Web panel to see the result or try the same page yourself.
           </p>
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/download"
-              className="grad-bg inline-flex items-center gap-2 rounded-2xl px-7 py-4 text-base font-bold text-[#0a0b12] shadow-[0_12px_32px_rgba(61,164,235,0.3)] transition-all hover:-translate-y-0.5"
-            >
-              Download UMIDE
-            </Link>
-          </div>
+          <Link className="mt-5 inline-block font-semibold text-blue hover:underline" href="/docs">
+            Get started with Workbench →
+          </Link>
         </div>
+        <figure>
+          <a href="/workbench/form-check.webp" aria-label="View the full form verification screenshot">
+            <Image src="/workbench/form-check.webp" width={1800} height={1047} alt="Workbench showing the tested form and its French confirmation message, Inscription confirmée" sizes="(max-width: 767px) 94vw, 660px" className="block h-auto w-full rounded-xl border border-border" />
+          </a>
+          <figcaption className="mt-2 text-sm text-dim">A local signup form after the agent submitted a test address.</figcaption>
+        </figure>
       </section>
     </>
   );

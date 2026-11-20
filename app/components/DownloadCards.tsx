@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RELEASES_URL, OS_META, SUPPORTED_OS, formatSize, type Asset, type OS } from "../lib/github";
+import { CLASSIC_URL, OS_META, SUPPORTED_OS, formatSize, type Asset, type OS } from "../lib/github";
 import { detectOS } from "../lib/os";
 
 const ICON: Record<OS, React.ReactNode> = {
@@ -19,7 +19,9 @@ const ICON: Record<OS, React.ReactNode> = {
 
 export function DownloadCards({
   assets,
+  classic = false,
 }: {
+  classic?: boolean;
   assets: Record<OS, Asset | null>;
 }) {
   const [os, setOS] = useState<OS | null>(null);
@@ -47,16 +49,16 @@ export function DownloadCards({
               )}
             </div>
             <h3 className="text-lg font-bold">{meta.label}</h3>
-            <p className="mt-1 mb-5 text-sm text-dim-2">{meta.note}</p>
+            <p className="mt-1 mb-5 text-sm text-dim-2">{classic ? meta.note : o === "mac" ? "macOS disk image" : "Windows x64 installer"}</p>
             <a
-              href={a?.url ?? RELEASES_URL}
+              href={a?.url ?? CLASSIC_URL}
               className={`mt-auto inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
                 recommended
                   ? "grad-bg text-[#0a0b12] hover:-translate-y-0.5"
                   : "border border-border bg-glass text-text hover:border-white/25"
               }`}
             >
-              {a ? `Download ${meta.installer}` : "View GitHub releases"}
+              {a ? `Download ${meta.installer}` : "View Classic release"}
               {a && <span className="text-xs font-medium opacity-70">{formatSize(a.size)}</span>}
             </a>
           </div>

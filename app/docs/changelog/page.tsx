@@ -34,7 +34,7 @@ export default async function ChangelogPage() {
 
       {releases.length === 0 ? (
         <p className="mt-12 rounded-2xl border border-border/60 p-8 text-center text-dim">
-          No releases published yet — check back soon, or watch the repo on{" "}
+          Release notes are temporarily unavailable here. Browse the published releases on{" "}
           <a href={RELEASES_URL} className="text-blue hover:underline">
             GitHub
           </a>

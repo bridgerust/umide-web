@@ -13,11 +13,9 @@ npm run dev        # http://localhost:3000
 
 ## How downloads stay current
 
-The download buttons fetch the latest GitHub release (including the current beta
-prerelease) via the Releases API in a Server Component, cached with ISR
-(`revalidate: 3600`). New releases appear within the hour — **no site redeploy
-needed**. OS detection (client-side) highlights the right installer. See
-`app/lib/github.ts`.
+The first Umide Workbench preview launches for macOS and Windows together. The site lists downloads once one public GitHub prerelease has a `workbench-v*` tag and both uploaded installers, `Umide-Workbench-macOS.dmg` and `Umide-Workbench-Windows-x64.msi`. Until then, the preview links point to GitHub Releases. UMIDE Classic downloads stay pinned to `v0.4.0-beta.1`.
+
+Release data is revalidated every 10 minutes. No site redeploy is needed when the installers become available. See `app/lib/github.ts`.
 
 ## Structure
 

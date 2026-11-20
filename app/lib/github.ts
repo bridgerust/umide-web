@@ -1,10 +1,16 @@
 // GitHub Releases data layer. Fetched in Server Components with ISR so the
-// download buttons always point at the newest release (including the current
-// beta prerelease) without a site rebuild.
+// each edition links to its own published installers without a site rebuild.
 
 export const REPO = "bridgerust/umide";
 export const REPO_URL = `https://github.com/${REPO}`;
 export const RELEASES_URL = `${REPO_URL}/releases`;
+
+export const CLASSIC_TAG = "v0.4.0-beta.1";
+export const CLASSIC_URL = `${RELEASES_URL}/tag/${CLASSIC_TAG}`;
+const WORKBENCH_INSTALLERS = {
+  mac: "Umide-Workbench-macOS.dmg",
+  windows: "Umide-Workbench-Windows-x64.msi",
+} as const;
 
 export const SUPPORTED_OS = ["mac", "windows"] as const;
 export type OS = (typeof SUPPORTED_OS)[number];
@@ -26,6 +32,7 @@ export interface Release {
 }
 
 interface ApiAsset {
+  state: string;
   name: string;
   browser_download_url: string;
   size: number;
@@ -49,7 +56,7 @@ function normalize(r: ApiRelease): Release {
     prerelease: r.prerelease,
     publishedAt: r.published_at,
     body: r.body || "",
-    assets: r.assets.map((a) => ({
+    assets: r.assets.filter((a) => a.state === "uploaded" && a.size > 0).map((a) => ({
       name: a.name,
       url: a.browser_download_url,
       size: a.size,
@@ -57,29 +64,29 @@ function normalize(r: ApiRelease): Release {
   };
 }
 
-/**
- * The newest published release — INCLUDING prereleases (the `/releases/latest`
- * endpoint skips prereleases, which would hide the beta). Revalidated hourly.
- * Returns `null` if there are no releases yet or the API is unreachable, so
- * callers fall back to the Releases page.
- */
-export async function getLatestRelease(): Promise<Release | null> {
+/** Existing UMIDE Classic installers stay attached to the original public beta. */
+export async function getClassicRelease(): Promise<Release | null> {
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/${REPO}/releases?per_page=10`,
-      {
-        headers: { Accept: "application/vnd.github+json" },
-        next: { revalidate: 600 },
-      },
-    );
+    const res = await fetch(`https://api.github.com/repos/${REPO}/releases/tags/${CLASSIC_TAG}`, {
+      headers: { Accept: "application/vnd.github+json" }, next: { revalidate: 600 },
+    });
     if (!res.ok) return null;
-    const list = (await res.json()) as ApiRelease[];
-    const published = list.filter((r) => !r.draft);
-    if (published.length === 0) return null;
-    return normalize(published[0]);
+    const release = (await res.json()) as ApiRelease;
+    return release.tag_name === CLASSIC_TAG && !release.draft ? normalize(release) : null;
   } catch {
     return null;
   }
+}
+
+/** Only announce Workbench once both platform installers exist on one public prerelease. */
+export function workbenchDownload(releases: Release[]) {
+  for (const release of releases) {
+    if (!release.tag.startsWith("workbench-v") || !release.prerelease) continue;
+    const mac = release.assets.find((asset) => asset.name === WORKBENCH_INSTALLERS.mac);
+    const windows = release.assets.find((asset) => asset.name === WORKBENCH_INSTALLERS.windows);
+    if (mac && windows) return { release, assets: { mac, windows } };
+  }
+  return null;
 }
 
 /** All published releases (newest first) — for the changelog/older versions. */

@@ -9,7 +9,7 @@ export function Footer() {
           <span className="grad-bg h-3 w-3 rounded-[4px]" />
           <span className="font-extrabold tracking-tight">UMIDE</span>
           <span className="text-sm text-dim-2">
-            · The unified IDE for mobile development
+            · Mobile and web development
           </span>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-dim">
@@ -39,7 +39,7 @@ export function Footer() {
         </div>
       </div>
       <div className="wrap pb-10 text-center text-xs text-dim-2 md:text-left">
-        Open source · Apache-2.0 · A fork of{" "}
+        Open source · Apache-2.0 · UMIDE Classic is based on{" "}
         <a href="https://github.com/lapce/lapce" className="underline hover:text-dim" target="_blank" rel="noreferrer">
           Lapce
         </a>

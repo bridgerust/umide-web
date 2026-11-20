@@ -4,7 +4,7 @@ import { REPO_URL } from "../lib/github";
 
 export const metadata: Metadata = {
   title: "Docs",
-  description: "Get started with UMIDE — install, open a project, run on device, and drive the embedded emulators.",
+  description: "Set up Umide Workbench for your first project, or follow the original UMIDE Classic beta guide.",
 };
 
 function Card({
@@ -52,25 +52,34 @@ export default function DocsPage() {
   return (
     <div className="wrap max-w-[860px] pt-20 md:pt-24">
       <h1 className="text-[clamp(34px,5vw,50px)] font-black tracking-[-1.5px]">
-        Get started
+        Get started with Workbench
       </h1>
-      <p className="mt-4 max-w-[600px] text-dim">
-        UMIDE is a mobile-first IDE for React Native &amp; Flutter — the editor, the
-        emulators, native logs, and an AI assistant in one window. Here&rsquo;s the quick
-        tour.
+      <p className="mt-4 max-w-[640px] text-dim">
+        Check the <Link href="/download" className="text-blue hover:underline">Workbench download page</Link> for
+        the macOS and Windows preview. You can use your existing Codex or Claude Code account.
       </p>
+      <Section title="Connect an agent and open a project">
+        <p>On first launch, the setup screen detects installed coding agents. Install Codex or Claude Code there if needed, then sign in through the provider. Open a project folder and start a conversation.</p>
+        <p>Choose the project folder for edits in place or an isolated Git copy for a separate task. The Files, Terminal, Mobile and Web buttons sit above the conversation.</p>
+      </Section>
+      <Section title="Check an app">
+        <p>For web projects, start your development server from the Web panel. A static site can use an index.html file and Python 3. To let the agent interact with a local page, install Node.js and Chrome, Chromium, Edge or Brave.</p>
+        <p>For Android, install the Android SDK and create an emulator. For iOS, use Xcode on macOS with a Simulator runtime. Select a device in the Mobile panel to run the app and read its logs.</p>
+      </Section>
 
+      <h2 className="mt-20 border-t border-border pt-10 text-3xl font-bold" id="classic">UMIDE Classic guide</h2>
+      <p className="mt-3 text-dim">The following steps apply to the original Lapce-based mobile IDE.</p>
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <Card href="/download" title="1 · Install" body="Install UMIDE on macOS or Windows and open a mobile project." />
+        <Card href="/download#classic" title="1 · Install Classic" body="Install UMIDE on macOS or Windows and open a mobile project." />
         <Card href="/docs#run" title="2 · Run on device" body="Hit ▶ Run and watch your app launch in a live terminal." />
         <Card href="/docs#devices" title="3 · Drive the device" body="Tap, type, read logs — and let the AI do it too." />
       </div>
 
       <Section title="Install">
         <p>
-          Download UMIDE from the{" "}
-          <Link href="/download" className="text-blue hover:underline">
-            download page
+          Download UMIDE Classic from the{" "}
+          <Link href="/download#classic" className="text-blue hover:underline">
+            Classic download page
           </Link>{" "}
           and open your React Native or Flutter project. UMIDE auto-detects the stack
           and shows it in the status bar.

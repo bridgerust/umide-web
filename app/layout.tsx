@@ -19,12 +19,15 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://umide.dev"),
   title: {
-    default: "UMIDE — The Cross-Platform Mobile AI IDE",
+    default: "Umide Workbench — Mobile and web development with coding agents",
     template: "%s · UMIDE",
   },
   description:
-    "A cross-platform mobile AI IDE with the Android emulator and iOS Simulator embedded right in the editor, plus a built-in AI assistant that sees and drives your devices. Built in Rust for React Native & Flutter, on macOS and Windows.",
+    "Work with Codex or Claude Code, edit files, run a terminal and test mobile and web apps in one desktop workspace. Explore the Umide Workbench preview.",
   keywords: [
+    "Umide Workbench",
+    "Codex",
+    "Claude Code",
     "mobile IDE",
     "React Native",
     "Flutter",
@@ -34,18 +37,20 @@ export const metadata: Metadata = {
     "Rust",
   ],
   openGraph: {
-    title: "UMIDE — The Unified IDE for Mobile Development",
+    title: "Umide Workbench",
     description:
-      "Embedded emulators and a built-in AI assistant for React Native and Flutter on macOS and Windows.",
+      "A desktop workspace for coding agents, mobile emulators and local web previews.",
     url: "https://umide.dev",
+    images: [{ url: "/workbench/workspace.webp", width: 2000, height: 1305, alt: "Umide Workbench with the chat, terminal and web preview open" }],
     siteName: "UMIDE",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "UMIDE — The Unified IDE for Mobile Development",
+    images: ["/workbench/workspace.webp"],
+    title: "Umide Workbench",
     description:
-      "Embedded emulators and a built-in AI assistant on macOS and Windows.",
+      "Develop and test mobile and web apps alongside Codex or Claude Code.",
   },
 };
 
