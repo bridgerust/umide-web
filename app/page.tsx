@@ -3,6 +3,21 @@ import Link from "next/link";
 import { PrimaryDownload } from "./components/PrimaryDownload";
 import { getReleases, RELEASES_URL, workbenchDownload } from "./lib/github";
 
+const MOBILE_CAPTURES = [
+  {
+    platform: "iOS Simulator",
+    src: "/workbench/mobile-ios.webp",
+    detail: "/workbench/mobile-ios-detail.webp",
+    alt: "Field Atlas showing the Pine Ridge Loop trail on an iPhone simulator next to a Swift change in Umide Workbench",
+  },
+  {
+    platform: "Android Emulator",
+    src: "/workbench/mobile-android.webp",
+    detail: "/workbench/mobile-android-detail.webp",
+    alt: "Field Atlas showing a trail elevation profile in the Android emulator in Umide Workbench",
+  },
+];
+
 const FEATURES = [
   {
     title: "Work with Codex or Claude Code",
@@ -22,36 +37,82 @@ export default async function Home() {
   const download = workbenchDownload(await getReleases());
   return (
     <>
-      <section className="mx-auto max-w-[860px] px-6 pb-8 pt-14 text-center md:pt-20">
-        <h1 className="text-[clamp(44px,7vw,78px)] font-black leading-[1.05] tracking-[-2.5px]">
-          Umide <span className="grad-text">Workbench</span>
-        </h1>
-        <p className="mx-auto mt-5 max-w-[660px] text-[clamp(17px,2.2vw,21px)] text-dim">
-          Build mobile and web apps with <b className="text-text">Codex or Claude Code</b>.
-          Keep your conversation, project files and terminal together, and check what your agent tested.
-        </p>
-        <div className="mt-7">
+      <section className="wrap grid items-center gap-6 pt-8 md:gap-8 md:pt-12 lg:grid-cols-[1fr_auto] lg:gap-x-10" aria-labelledby="workbench-title">
+        <div className="text-center lg:text-left">
+          <h1 id="workbench-title" className="text-[clamp(38px,5.2vw,64px)] font-black leading-[1.05] tracking-[-2.5px]">
+            Umide <span className="grad-text">Workbench</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-[620px] text-[clamp(16px,1.6vw,20px)] text-dim lg:ml-0">
+            Build mobile and web apps with <b className="text-text">Codex or Claude Code</b>.
+            Run an iOS Simulator or Android emulator beside your conversation, files and terminal.
+          </p>
+          <a href="#mobile-demo" className="mt-3 inline-flex items-center gap-2 font-semibold text-blue hover:underline">
+            <svg viewBox="0 0 20 20" fill="currentColor" className="size-4" aria-hidden="true">
+              <path d="M5 3.8a1 1 0 0 1 1.5-.86l10.3 6.2a1 1 0 0 1 0 1.72L6.5 17.06A1 1 0 0 1 5 16.2z" />
+            </svg>
+            Watch the 17-second mobile demo
+          </a>
+        </div>
+        <div className="order-3 text-center lg:order-2">
           {download ? (
             <PrimaryDownload assets={download.assets} tag={download.release.tag} />
           ) : (
-            <>
-              <a className="grad-bg inline-flex rounded-xl px-6 py-3 font-bold text-[#0a0b12]" href={RELEASES_URL}>
-                Follow Workbench releases
-              </a>
-              <p className="mt-3 text-sm text-dim">The first Workbench preview is planned for macOS, Windows x64 and Ubuntu 24.04 x86-64.</p>
-            </>
+            <a className="grad-bg inline-flex rounded-xl px-6 py-3 font-bold text-[#0a0b12]" href={RELEASES_URL}>
+              Browse Workbench releases
+            </a>
           )}
+          <Link href="/download#classic" className="mt-2 inline-block text-sm text-blue hover:underline">
+            Looking for UMIDE Classic?
+          </Link>
         </div>
-        <Link href="/download#classic" className="mt-3 inline-block text-sm text-blue hover:underline">
-          Looking for UMIDE Classic?
-        </Link>
+        <div className="order-2 grid gap-5 md:grid-cols-2 lg:order-3 lg:col-span-2">
+          {MOBILE_CAPTURES.map(({ platform, src, detail, alt }, index) => (
+            <figure key={src}>
+              <a className="group block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue" href={src} title={`Open the full-size ${platform} screenshot`}>
+                <Image
+                  src={detail}
+                  width={1056}
+                  height={880}
+                  alt={alt}
+                  priority={index === 0}
+                  sizes="(min-width: 1160px) 546px, (min-width: 768px) 48vw, 94vw"
+                  className="block h-auto w-full rounded-xl border border-border shadow-xl transition-colors group-hover:border-blue"
+                />
+                <span className="mt-2.5 flex flex-wrap items-baseline justify-between gap-x-3 text-sm">
+                  <span className="font-semibold">{platform}</span>
+                  <span className="text-blue group-hover:underline">View full workspace <span aria-hidden="true">↗</span></span>
+                </span>
+              </a>
+            </figure>
+          ))}
+        </div>
       </section>
 
-      <figure className="wrap max-w-[1030px]">
-        <a href="/workbench/workspace.webp" aria-label="View the full Workbench screenshot">
-          <Image priority src="/workbench/workspace.webp" width={2000} height={1305} alt="A Codex conversation and project terminal next to a live preview of a trail guide in Umide Workbench" sizes="(max-width: 1030px) 94vw, 980px" className="block h-auto w-full rounded-xl border border-border shadow-2xl" />
-        </a>
-      </figure>
+      <section id="mobile-demo" className="wrap mt-14 grid scroll-mt-24 items-center gap-5 md:mt-20 md:grid-cols-[0.7fr_1.3fr] md:gap-12">
+        <div>
+          <h2 id="demo-title" className="text-[clamp(28px,4vw,42px)] font-black leading-tight tracking-[-1px]">
+            From iPhone to Pixel
+          </h2>
+          <p id="demo-description" className="mt-3 text-dim">
+            The demo starts with a Swift change beside the Field Atlas trail map on iPhone.
+            On the Pixel emulator, a tap opens the elevation profile for Pine Ridge Loop before returning to the trail journal.
+          </p>
+        </div>
+        <video
+          controls
+          playsInline
+          preload="none"
+          poster="/workbench/mobile-demo-poster.webp"
+          width={1440}
+          height={936}
+          aria-labelledby="demo-title"
+          aria-describedby="demo-description"
+          className="block h-auto w-full rounded-xl border border-border bg-bg-soft shadow-xl"
+        >
+          <source src="/workbench/mobile-demo.mp4" type="video/mp4" />
+          <a href="/workbench/mobile-demo.mp4">Download the mobile demo video</a>
+        </video>
+      </section>
 
       <section id="features" className="wrap mt-16 scroll-mt-24 md:mt-24">
         <h2 className="text-[clamp(28px,4vw,42px)] font-black leading-tight tracking-[-1px]">Inside the Workbench</h2>
@@ -63,6 +124,11 @@ export default async function Home() {
             </article>
           ))}
         </div>
+        <figure className="mx-auto mt-7 max-w-[980px]">
+          <a href="/workbench/workspace.webp" aria-label="View the full Workbench screenshot">
+            <Image src="/workbench/workspace.webp" width={2000} height={1305} alt="A Codex conversation and project terminal next to a live preview of a trail guide in Umide Workbench" sizes="(max-width: 1030px) 94vw, 980px" className="block h-auto w-full rounded-xl border border-border shadow-xl" />
+          </a>
+        </figure>
       </section>
 
       <section className="wrap mt-16 grid items-center gap-7 md:mt-24 md:grid-cols-[0.85fr_1.35fr] md:gap-12">

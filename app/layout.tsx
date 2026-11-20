@@ -41,13 +41,13 @@ export const metadata: Metadata = {
     description:
       "A desktop workspace for coding agents, mobile emulators and local web previews.",
     url: "https://umide.dev",
-    images: [{ url: "/workbench/workspace.webp", width: 2000, height: 1305, alt: "Umide Workbench with the chat, terminal and web preview open" }],
+    images: [{ url: "/workbench/mobile-ios.webp", width: 1920, height: 1248, alt: "A trail map on an iPhone simulator beside a Swift code change in Umide Workbench" }],
     siteName: "UMIDE",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/workbench/workspace.webp"],
+    images: ["/workbench/mobile-ios.webp"],
     title: "Umide Workbench",
     description:
       "Develop and test mobile and web apps alongside Codex or Claude Code.",
