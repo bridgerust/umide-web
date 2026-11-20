@@ -6,8 +6,10 @@ export function detectOS(): OS | null {
   const ua = navigator.userAgent.toLowerCase();
   const platform = (navigator.platform || "").toLowerCase();
   const ipadDesktopMode = platform === "macintel" && navigator.maxTouchPoints > 1;
-  if (/android|iphone|ipad|ipod|mobile/.test(ua) || ipadDesktopMode) return null;
+  if (/android|iphone|ipad|ipod|mobile|\bcros\b/.test(ua) || ipadDesktopMode) return null;
   if (ua.includes("windows nt") || platform.startsWith("win")) return "windows";
   if (ua.includes("macintosh") || platform.startsWith("mac")) return "mac";
+  const linux = /\blinux\b/.test(ua) || platform.startsWith("linux");
+  if (linux && /\b(amd64|x86_64|x64)\b/.test(`${ua} ${platform}`)) return "linux";
   return null;
 }

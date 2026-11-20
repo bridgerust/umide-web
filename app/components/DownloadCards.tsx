@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CLASSIC_URL, OS_META, SUPPORTED_OS, formatSize, type Asset, type OS } from "../lib/github";
+import { CLASSIC_NOTES, CLASSIC_OS, CLASSIC_URL, OS_META, WORKBENCH_OS, formatSize, type Asset, type ClassicOS, type OS } from "../lib/github";
 import { detectOS } from "../lib/os";
 
 const ICON: Record<OS, React.ReactNode> = {
@@ -15,33 +15,39 @@ const ICON: Record<OS, React.ReactNode> = {
       <path d="M3 5.48L10.4 4.5v7.02H3V5.48zm0 13.04l7.4.98V13H3v5.52zM11.2 4.4L21 3v8.52h-9.8V4.4zm0 8.12H21V21l-9.8-1.38v-7.1z" />
     </svg>
   ),
+  linux: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+      <rect x="2" y="4" width="20" height="16" rx="3" />
+      <path d="m6 9 3 3-3 3m6 0h5" />
+    </svg>
+  ),
 };
 
-export function DownloadCards({
-  assets,
-  classic = false,
-}: {
-  classic?: boolean;
-  assets: Record<OS, Asset | null>;
-}) {
+type DownloadProps =
+  | { classic: true; assets: Record<ClassicOS, Asset | null> }
+  | { classic?: false; assets: Record<OS, Asset> };
+
+export function DownloadCards(props: DownloadProps) {
   const [os, setOS] = useState<OS | null>(null);
   useEffect(() => setOS(detectOS()), []);
 
-  const sorted = os ? [os, ...SUPPORTED_OS.filter((o) => o !== os)] : SUPPORTED_OS;
+  const cards = props.classic
+    ? CLASSIC_OS.map((os) => ({ os, asset: props.assets[os], note: CLASSIC_NOTES[os] }))
+    : WORKBENCH_OS.map((os) => ({ os, asset: props.assets[os], note: OS_META[os].note }));
+  cards.sort((a, b) => Number(b.os === os) - Number(a.os === os));
 
   return (
-    <div className="grid gap-5 md:grid-cols-2">
-      {sorted.map((o) => {
-        const a = assets[o];
-        const meta = OS_META[o];
-        const recommended = o === os;
+    <div className={props.classic ? "grid gap-5 md:grid-cols-2" : "grid gap-5 md:grid-cols-3"}>
+      {cards.map(({ os: platform, asset, note }) => {
+        const meta = OS_META[platform];
+        const recommended = platform === os;
         return (
           <div
-            key={o}
+            key={platform}
             className={`glass flex flex-col rounded-2xl p-6 ${recommended ? "ring-2 ring-accent/70" : ""}`}
           >
             <div className="mb-4 flex items-center justify-between">
-              <div className="text-text">{ICON[o]}</div>
+              <div className="text-text" aria-hidden="true">{ICON[platform]}</div>
               {recommended && (
                 <span className="rounded-full bg-accent/15 px-2.5 py-1 text-xs font-semibold text-blue">
                   Your OS
@@ -49,17 +55,17 @@ export function DownloadCards({
               )}
             </div>
             <h3 className="text-lg font-bold">{meta.label}</h3>
-            <p className="mt-1 mb-5 text-sm text-dim-2">{classic ? meta.note : o === "mac" ? "macOS disk image" : "Windows x64 installer"}</p>
+            <p className="mt-1 mb-5 text-sm text-dim-2">{note}</p>
             <a
-              href={a?.url ?? CLASSIC_URL}
+              href={asset?.url ?? CLASSIC_URL}
               className={`mt-auto inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
                 recommended
                   ? "grad-bg text-[#0a0b12] hover:-translate-y-0.5"
                   : "border border-border bg-glass text-text hover:border-white/25"
               }`}
             >
-              {a ? `Download ${meta.installer}` : "View Classic release"}
-              {a && <span className="text-xs font-medium opacity-70">{formatSize(a.size)}</span>}
+              {asset ? `Download ${meta.installer}` : "View Classic release"}
+              {asset && <span className="text-xs font-medium opacity-70">{formatSize(asset.size)}</span>}
             </a>
           </div>
         );

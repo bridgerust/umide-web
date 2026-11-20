@@ -1,4 +1,4 @@
-// GitHub Releases data layer. Fetched in Server Components with ISR so the
+// GitHub Releases data layer. Fetched in Server Components with ISR so
 // each edition links to its own published installers without a site rebuild.
 
 export const REPO = "bridgerust/umide";
@@ -7,13 +7,16 @@ export const RELEASES_URL = `${REPO_URL}/releases`;
 
 export const CLASSIC_TAG = "v0.4.0-beta.1";
 export const CLASSIC_URL = `${RELEASES_URL}/tag/${CLASSIC_TAG}`;
+export const CLASSIC_OS = ["mac", "windows"] as const;
+export type ClassicOS = (typeof CLASSIC_OS)[number];
+export const WORKBENCH_OS = [...CLASSIC_OS, "linux"] as const;
+export type OS = (typeof WORKBENCH_OS)[number];
+
 const WORKBENCH_INSTALLERS = {
   mac: "Umide-Workbench-macOS.dmg",
   windows: "Umide-Workbench-Windows-x64.msi",
-} as const;
-
-export const SUPPORTED_OS = ["mac", "windows"] as const;
-export type OS = (typeof SUPPORTED_OS)[number];
+  linux: "Umide-Workbench-Linux-x86_64.deb",
+} satisfies Record<OS, string>;
 
 export interface Asset {
   name: string;
@@ -56,7 +59,7 @@ function normalize(r: ApiRelease): Release {
     prerelease: r.prerelease,
     publishedAt: r.published_at,
     body: r.body || "",
-    assets: r.assets.filter((a) => a.state === "uploaded" && a.size > 0).map((a) => ({
+    assets: r.assets.filter((a) => a.state === "uploaded" && a.size > 0 && a.browser_download_url).map((a) => ({
       name: a.name,
       url: a.browser_download_url,
       size: a.size,
@@ -78,13 +81,14 @@ export async function getClassicRelease(): Promise<Release | null> {
   }
 }
 
-/** Only announce Workbench once both platform installers exist on one public prerelease. */
+/** Offer the newest public Workbench preview with a full set of installers. */
 export function workbenchDownload(releases: Release[]) {
   for (const release of releases) {
     if (!release.tag.startsWith("workbench-v") || !release.prerelease) continue;
     const mac = release.assets.find((asset) => asset.name === WORKBENCH_INSTALLERS.mac);
     const windows = release.assets.find((asset) => asset.name === WORKBENCH_INSTALLERS.windows);
-    if (mac && windows) return { release, assets: { mac, windows } };
+    const linux = release.assets.find((asset) => asset.name === WORKBENCH_INSTALLERS.linux);
+    if (mac && windows && linux) return { release, assets: { mac, windows, linux } };
   }
   return null;
 }
@@ -108,9 +112,9 @@ export async function getReleases(): Promise<Release[]> {
 }
 
 /** Match a release's assets to the installer for each OS (by file extension). */
-export function assetFor(release: Release | null, os: OS): Asset | null {
+export function classicAssetFor(release: Release | null, os: ClassicOS): Asset | null {
   if (!release) return null;
-  const ext: Record<OS, RegExp> = {
+  const ext: Record<ClassicOS, RegExp> = {
     mac: /\.dmg$/i,
     windows: /\.msi$/i,
   };
@@ -124,13 +128,23 @@ export const OS_META: Record<
   mac: {
     label: "macOS",
     installer: ".dmg",
-    note: "Apple Silicon & Intel · signed & notarized",
+    note: "Apple Silicon & Intel",
   },
   windows: {
     label: "Windows",
     installer: ".msi",
-    note: "Windows 10/11 · installer not yet code-signed",
+    note: "Windows x64 installer",
   },
+  linux: {
+    label: "Linux",
+    installer: ".deb",
+    note: "Ubuntu 24.04 · x86-64",
+  },
+};
+
+export const CLASSIC_NOTES: Record<ClassicOS, string> = {
+  mac: "Apple Silicon & Intel · signed & notarized",
+  windows: "Windows 10/11 · installer not yet code-signed",
 };
 
 export function formatSize(bytes: number): string {

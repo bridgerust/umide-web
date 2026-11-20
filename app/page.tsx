@@ -28,7 +28,7 @@ export default async function Home() {
         </h1>
         <p className="mx-auto mt-5 max-w-[660px] text-[clamp(17px,2.2vw,21px)] text-dim">
           Build mobile and web apps with <b className="text-text">Codex or Claude Code</b>.
-          Keep the conversation, project files, terminal and running app in one desktop window.
+          Keep your conversation, project files and terminal together, and check what your agent tested.
         </p>
         <div className="mt-7">
           {download ? (
@@ -38,7 +38,7 @@ export default async function Home() {
               <a className="grad-bg inline-flex rounded-xl px-6 py-3 font-bold text-[#0a0b12]" href={RELEASES_URL}>
                 Follow Workbench releases
               </a>
-              <p className="mt-3 text-sm text-dim">The first Workbench preview is planned for macOS and Windows.</p>
+              <p className="mt-3 text-sm text-dim">The first Workbench preview is planned for macOS, Windows x64 and Ubuntu 24.04 x86-64.</p>
             </>
           )}
         </div>
@@ -72,7 +72,7 @@ export default async function Home() {
           </h2>
           <p className="mt-4 text-dim">
             Ask the agent to check a form on your local site. It can fill a field, click Submit and check for the confirmation.
-            Open the Web panel to see the result or try the same page yourself.
+            Open the Web panel to see the result. Try the page yourself in the embedded preview on macOS or your browser on Windows and Linux.
           </p>
           <Link className="mt-5 inline-block font-semibold text-blue hover:underline" href="/docs">
             Get started with Workbench →

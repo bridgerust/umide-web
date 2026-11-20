@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { getClassicRelease, getReleases, workbenchDownload, assetFor, CLASSIC_TAG, CLASSIC_URL, RELEASES_URL, type OS, type Asset } from "../lib/github";
+import { getClassicRelease, getReleases, workbenchDownload, classicAssetFor, CLASSIC_TAG, CLASSIC_URL, RELEASES_URL } from "../lib/github";
 import { DownloadCards } from "../components/DownloadCards";
 
 export const metadata: Metadata = {
   title: "Download",
   description:
-    "Find the Umide Workbench preview for macOS and Windows and the original UMIDE Classic beta installers.",
+    "Get Umide Workbench for macOS, Windows x64 or Ubuntu 24.04 x86-64, or download the original UMIDE Classic beta.",
 };
 
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
@@ -22,9 +22,9 @@ function Step({ n, children }: { n: number; children: React.ReactNode }) {
 export default async function DownloadPage() {
   const [releases, release] = await Promise.all([getReleases(), getClassicRelease()]);
   const workbench = workbenchDownload(releases);
-  const assets: Record<OS, Asset | null> = {
-    mac: assetFor(release, "mac"),
-    windows: assetFor(release, "windows"),
+  const assets = {
+    mac: classicAssetFor(release, "mac"),
+    windows: classicAssetFor(release, "windows"),
   };
 
   return (
@@ -34,7 +34,7 @@ export default async function DownloadPage() {
           Download <span className="grad-text">Umide Workbench</span>
         </h1>
         <p className="mx-auto mt-4 max-w-[590px] text-dim">
-          {workbench ? "The Workbench preview is available for macOS and Windows." : "The first Workbench preview will be available for macOS and Windows. Follow the release on GitHub, or find the original IDE below."}
+          {workbench ? "Choose your installer for macOS, Windows x64 or Ubuntu 24.04 x86-64." : "The first Workbench preview is planned for macOS, Windows x64 and Ubuntu 24.04 x86-64. Follow the release on GitHub, or find the original IDE below."}
         </p>
         <a href={workbench?.release.url ?? RELEASES_URL} className="mt-4 inline-block font-semibold text-blue hover:underline">
           {workbench ? `Release notes · ${workbench.release.tag}` : "Follow Workbench releases →"}

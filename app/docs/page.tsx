@@ -56,14 +56,19 @@ export default function DocsPage() {
       </h1>
       <p className="mt-4 max-w-[640px] text-dim">
         Check the <Link href="/download" className="text-blue hover:underline">Workbench download page</Link> for
-        the macOS and Windows preview. You can use your existing Codex or Claude Code account.
+        the macOS, Windows x64 and Ubuntu 24.04 x86-64 installers. You can use your existing Codex or Claude Code account.
       </p>
+      <Section title="Install Workbench">
+        <p>On macOS, open the disk image and drag Umide Workbench to Applications. On Windows, run the MSI installer.</p>
+        <p>On Ubuntu 24.04 x86-64, open a terminal in the folder containing the downloaded package and run this command. Then open Umide Workbench from your applications.</p>
+        <pre className="overflow-x-auto rounded-lg bg-black/30 p-3 font-mono text-[13px] text-cyan">sudo apt install ./Umide-Workbench-Linux-x86_64.deb</pre>
+      </Section>
       <Section title="Connect an agent and open a project">
         <p>On first launch, the setup screen detects installed coding agents. Install Codex or Claude Code there if needed, then sign in through the provider. Open a project folder and start a conversation.</p>
         <p>Choose the project folder for edits in place or an isolated Git copy for a separate task. The Files, Terminal, Mobile and Web buttons sit above the conversation.</p>
       </Section>
       <Section title="Check an app">
-        <p>For web projects, start your development server from the Web panel. A static site can use an index.html file and Python 3. To let the agent interact with a local page, install Node.js and Chrome, Chromium, Edge or Brave.</p>
+        <p>For web projects, start your development server from the Web panel. On Windows and Linux, open the local URL in your browser. A static site can use an index.html file and Python 3. To let the agent interact with a local page, install Node.js and Chrome, Chromium, Edge or Brave.</p>
         <p>For Android, install the Android SDK and create an emulator. For iOS, use Xcode on macOS with a Simulator runtime. Select a device in the Mobile panel to run the app and read its logs.</p>
       </Section>
 
